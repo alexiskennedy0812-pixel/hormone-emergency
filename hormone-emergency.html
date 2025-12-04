@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hormone Imbalance Diagnosis Game</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #e6f6ff;
+  text-align: center;
+  margin: 0;
+}
+h1 {
+  margin-top: 30px;
+}
+#game-box, #game-over, #intro {
+  background: white;
+  width: 60%;
+  margin: 40px auto;
+  padding: 25px;
+  border-radius: 12px;
+  border: 3px solid #7dc9ff;
+}
+button {
+  padding: 12px 22px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #7dc9ff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover {
+  background: #52baf0;
+}
+.hidden { display: none; }
+#feedback {
+  font-size: 20px;
+  margin-top: 15px;
+  height: 30px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Hormone Imbalance Diagnosis Game</h1>
+
+<!-- INTRO SCREEN -->
+<div id="intro">
+  <h2>Welcome!</h2>
+  <p>Use what you learned to diagnose the cause of each hormone imbalance!</p>
+  <button onclick="startGame()">Start</button>
+</div>
+
+<!-- GAME AREA -->
+<div id="game-box" class="hidden">
+  <h2 id="case-text"></h2>
+  <div id="choices"></div>
+  <div id="feedback"></div>
+</div>
+
+<!-- GAME OVER -->
+<div id="game-over" class="hidden">
+  <h2>🎉 You Diagnosed All Hormone Imbalances! 🎉</h2>
+  <p>Great job understanding all the causes from the lesson!</p>
+  <button onclick="restart()">Play Again</button>
+</div>
+
+<script>
+// QUESTIONS DIRECTLY FROM YOUR SCRIPT
+const cases = [
+  {
+    symptoms: "Someone is very stressed and their stress hormone increases. What can happen?",
+    options: [
+      "A hormone imbalance can happen",
+      "Stress never affects hormones",
+      "Hormones stay perfectly balanced"
+    ],
+    correct: "A hormone imbalance can happen"
+  },
+  {
+    symptoms: "Someone eats very poorly or is far under or overweight. What happens to hormones?",
+    options: [
+      "It can confuse or mix up hormones",
+      "Food has no effect on hormones",
+      "Weight changes never affect hormones"
+    ],
+    correct: "It can confuse or mix up hormones"
+  },
+  {
+    symptoms: "Someone is going through puberty. What happens to their hormones?",
+    options: [
+      "Hormones naturally change",
+      "Hormones stay exactly the same",
+      "Puberty does not affect hormones"
+    ],
+    correct: "Hormones naturally change"
+  },
+  {
+    symptoms: "Someone is exposed to chemicals or toxins. What can happen?",
+    options: [
+      "Hormones can be affected by chemicals",
+      "Environment has no effect on hormones",
+      "Hormones protect themselves no matter what"
+    ],
+    correct: "Hormones can be affected by chemicals"
+  },
+  {
+    symptoms: "Someone has diabetes or PCOS. What can happen?",
+    options: [
+      "It can cause hormone mix-ups",
+      "Medical issues never affect hormones",
+      "Only stress affects hormones"
+    ],
+    correct: "It can cause hormone mix-ups"
+  },
+  {
+    symptoms: "Which statement about hormones is TRUE?",
+    options: [
+      "Hormones are helpers that guide the body",
+      "Hormones do nothing important",
+      "Hormones only control one thing"
+    ],
+    correct: "Hormones are helpers that guide the body"
+  }
+];
+
+let current = 0;
+
+function startGame() {
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("game-box").classList.remove("hidden");
+  loadCase();
+}
+
+function loadCase() {
+  const caseText = document.getElementById("case-text");
+  const choicesDiv = document.getElementById("choices");
+  const feedback = document.getElementById("feedback");
+
+  feedback.textContent = "";
+  choicesDiv.innerHTML = "";
+
+  const currentCase = cases[current];
+  caseText.textContent = currentCase.symptoms;
+
+  currentCase.options.forEach(option => {
+    const btn = document.createElement("button");
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(option);
+    choicesDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected) {
+  const feedback = document.getElementById("feedback");
+
+  if (selected === cases[current].correct) {
+    feedback.style.color = "green";
+    feedback.textContent = "Correct!";
+
+    setTimeout(() => {
+      current++;
+      if (current >= cases.length) endGame();
+      else loadCase();
+    }, 800);
+
+  } else {
+    feedback.style.color = "red";
+    feedback.textContent = "Try again!";
+  }
+}
+
+function endGame() {
+  document.getElementById("game-box").classList.add("hidden");
+  document.getElementById("game-over").classList.remove("hidden");
+}
+
+function restart() {
+  location.reload();
+}
+</script>
+
+</body>
+</html>
